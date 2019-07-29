@@ -1,6 +1,6 @@
 package com.zhisheng.data.sources.utils;
 
-import com.zhisheng.common.model.MetricEvent;
+import com.zhisheng.common.model.Metrics;
 import com.zhisheng.common.utils.GsonUtil;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -25,7 +25,7 @@ public class KafkaUtil {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer"); //value 序列化
         KafkaProducer producer = new KafkaProducer<String, String>(props);
 
-        MetricEvent metric = new MetricEvent();
+        Metrics metric = new Metrics();
         metric.setTimestamp(System.currentTimeMillis());
         metric.setName("mem");
         Map<String, String> tags = new HashMap<>();

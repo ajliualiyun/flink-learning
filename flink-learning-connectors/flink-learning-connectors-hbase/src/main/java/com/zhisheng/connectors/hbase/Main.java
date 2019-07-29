@@ -32,12 +32,8 @@ import static com.zhisheng.connectors.hbase.constant.HBaseConstant.*;
  */
 @Slf4j
 public class Main {
-    //表名
-    private static TableName HBASE_TABLE_NAME = TableName.valueOf("zhisheng_stream");
-    //列族
-    private static final String INFO_STREAM = "info_stream";
-    //列名
-    private static final String BAR_STREAM = "bar_stream";
+    private static TableName tableName = TableName.valueOf("zhisheng");
+    private static final String CF = "ke";
 
     public static void main(String[] args) throws Exception {
         final ParameterTool parameterTool = ExecutionEnvUtil.createParameterTool(args);
@@ -70,14 +66,14 @@ public class Main {
 
         Connection connect = ConnectionFactory.createConnection(configuration);
         Admin admin = connect.getAdmin();
-        if (!admin.tableExists(HBASE_TABLE_NAME)) { //检查是否有该表，如果没有，创建
-            admin.createTable(new HTableDescriptor(HBASE_TABLE_NAME).addFamily(new HColumnDescriptor(INFO_STREAM)));
+        if (!admin.tableExists(tableName)) {
+            admin.createTable(new HTableDescriptor(tableName).addFamily(new HColumnDescriptor(CF)));
         }
-        Table table = connect.getTable(HBASE_TABLE_NAME);
+        Table table = connect.getTable(tableName);
         TimeStamp ts = new TimeStamp(new Date());
         Date date = ts.getDate();
         Put put = new Put(Bytes.toBytes(date.getTime()));
-        put.addColumn(Bytes.toBytes(INFO_STREAM), Bytes.toBytes("test"), Bytes.toBytes(string));
+        put.addColumn(Bytes.toBytes(CF), Bytes.toBytes("test"), Bytes.toBytes(string));
         table.put(put);
         table.close();
         connect.close();

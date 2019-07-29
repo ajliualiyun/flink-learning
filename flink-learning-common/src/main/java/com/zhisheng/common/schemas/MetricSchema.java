@@ -1,7 +1,7 @@
 package com.zhisheng.common.schemas;
 
 import com.google.gson.Gson;
-import com.zhisheng.common.model.MetricEvent;
+import com.zhisheng.common.model.Metrics;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -16,27 +16,27 @@ import java.nio.charset.Charset;
  * 微信公众号：zhisheng
  *
  */
-public class MetricSchema implements DeserializationSchema<MetricEvent>, SerializationSchema<MetricEvent> {
+public class MetricSchema implements DeserializationSchema<Metrics>, SerializationSchema<Metrics> {
 
     private static final Gson gson = new Gson();
 
     @Override
-    public MetricEvent deserialize(byte[] bytes) throws IOException {
-        return gson.fromJson(new String(bytes), MetricEvent.class);
+    public Metrics deserialize(byte[] bytes) throws IOException {
+        return gson.fromJson(new String(bytes), Metrics.class);
     }
 
     @Override
-    public boolean isEndOfStream(MetricEvent metricEvent) {
+    public boolean isEndOfStream(Metrics metricEvent) {
         return false;
     }
 
     @Override
-    public byte[] serialize(MetricEvent metricEvent) {
+    public byte[] serialize(Metrics metricEvent) {
         return gson.toJson(metricEvent).getBytes(Charset.forName("UTF-8"));
     }
 
     @Override
-    public TypeInformation<MetricEvent> getProducedType() {
-        return TypeInformation.of(MetricEvent.class);
+    public TypeInformation<Metrics> getProducedType() {
+        return TypeInformation.of(Metrics.class);
     }
 }
